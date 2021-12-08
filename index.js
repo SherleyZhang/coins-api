@@ -36,7 +36,7 @@ app.post("/api/comments", (request, response) => {
   client.connect().then(() => {
     client
       .query(
-        "insert into comments (names, posts) values ('sherley', 'love it!!!') returning *",
+        "insert into comments (names, posts) values ($1, $2) returning *",
         [request.body.title, request.body.body]
       )
       .then((queryResponse) => {
