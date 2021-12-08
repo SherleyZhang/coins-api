@@ -23,7 +23,7 @@ app.get("/api/comments/:id", (request, response) => {
   const client = createClient();
   client.connect().then(() => {
     client
-      .query("select * from posts where id=$1", [request.params.id])
+      .query("select * from comments where id=$1", [request.params.id])
       .then((queryResponse) => {
         response.json(queryResponse.rows[0]);
       });
