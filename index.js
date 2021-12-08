@@ -37,7 +37,7 @@ app.post("/api/comments", (request, response) => {
     client
       .query(
         "insert into comments (names, posts) values ($1, $2) returning *",
-        [request.body.title, request.body.body]
+        [request.body.names, request.body.posts]
       )
       .then((queryResponse) => {
         response.json(queryResponse.rows[0]);
