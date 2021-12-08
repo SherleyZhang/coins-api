@@ -21,11 +21,18 @@ app.get("/api/comments", (request, response) => {
 
 app.get("/api/comments/:id", (request, response) => {
   const client = createClient();
+
   client.connect().then(() => {
     client
-      .query("select * from comments where id=$1", [request.params.id])
+      .query("SELECT * FROM comments WHERE id = $1 LIMIT 1", [
+        request.params.id,
+      ])
       .then((queryResponse) => {
-        response.json(queryResponse.rows[0]);
+        if (queryResponse.rowCount >= 1) {
+          response.json(queryResponse.rows[0]);
+        } else {
+          response.status(404).send();
+        }
       });
   });
 });
@@ -41,6 +48,41 @@ app.post("/api/comments", (request, response) => {
       )
       .then((queryResponse) => {
         response.json(queryResponse.rows[0]);
+      });
+  });
+});
+
+app.delete("/api/comments/:id", (request, response) => {
+  const client = createClient();
+
+  client.connect().then(() => {
+    client
+      .query("DELETE FROM comments WHERE id = $1", [request.params.id])
+      .then((queryResponse) => {
+        if (queryResponse.rowCount === 1) {
+          response.status(204).send();
+        } else {
+          response.status(404).send();
+        }
+      });
+  });
+});
+
+app.put("/api/comments/:id", (request, response) => {
+  const client = createClient();
+
+  client.connect().then(() => {
+    client
+      .query(
+        "UPDATE comments SET names = $1, posts = $2 WHERE id = $3 RETURNING *",
+        [request.body.title, request.body.body, request.params.id]
+      )
+      .then((queryResponse) => {
+        if (queryResponse.rowCount === 1) {
+          response.json(queryResponse.rows[0]);
+        } else {
+          response.status(404).send();
+        }
       });
   });
 });
