@@ -30,21 +30,6 @@ app.get("/api/comments/:id", (request, response) => {
   });
 });
 
-app.get("/api/comments/:id", (request, response) => {
-  const client = createClient();
-  client.connect().then(() => {
-    client
-      .query("select * from posts where id=$1", [request.params.id])
-      .then((queryResponse) => {
-        if (queryResponse.rows.length >= 1) {
-          response.json(queryResponse.rows[0]);
-        } else {
-          response.status(404).send();
-        }
-      });
-  });
-});
-
 // post request: get request是refresh就自然发生，但是post request需要手动（比如postman上）
 app.post("/api/posts", (request, response) => {
   const client = createClient();
