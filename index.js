@@ -31,7 +31,7 @@ app.get("/api/comments/:id", (request, response) => {
 });
 
 // post request: get request是refresh就自然发生，但是post request需要手动（比如postman上）
-app.post("/api/posts", (request, response) => {
+app.post("/api/comments", (request, response) => {
   const client = createClient();
   client.connect().then(() => {
     client
