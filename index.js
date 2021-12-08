@@ -75,7 +75,7 @@ app.put("/api/comments/:id", (request, response) => {
     client
       .query(
         "UPDATE comments SET names = $1, posts = $2 WHERE id = $3 RETURNING *",
-        [request.body.title, request.body.body, request.params.id]
+        [request.body.names, request.body.posts, request.params.id]
       )
       .then((queryResponse) => {
         if (queryResponse.rowCount === 1) {
