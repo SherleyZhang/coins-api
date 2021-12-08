@@ -55,8 +55,7 @@ function createClient() {
   return client;
 }
 
-var port_number = server.listen(process.env.PORT || 3000);
-app.listen(port_number);
+app.listen(process.env.PORT || 3000);
 //http://localhost:3000/api/posts
 
 //git init
