@@ -62,7 +62,7 @@ app.post("/api/posts", (request, response) => {
 
 function createClient() {
   const client = new Client({
-    connectionString: process.env.CONNECTION_STRING,
+    connectionString: process.env.DATABASE_URL,
     ssl: {
       rejectUnauthorized: false,
     },
@@ -70,7 +70,14 @@ function createClient() {
   return client;
 }
 
-app.listen(process.enc.PORT || 3000); //http://localhost:3000/api/posts
+if (process.env.NODE_ENV === "production"{
+      app.use(express.static("build"));
+      app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname,  "build", "index.html"));
+      });
+}
+    
+app.listen(process.env.PORT || 3000); //http://localhost:3000/api/posts
 
 //git init
 //git status
